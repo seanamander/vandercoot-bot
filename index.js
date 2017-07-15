@@ -1,6 +1,6 @@
 const Discord = require("Discord.js");
 const bot = new Discord.Client();
-var commands = ["%help", "newchannel"];
+var commands = ["%help", "%newchannel"];
 var blue = 3447003;
 
 bot.on('ready', () => {
@@ -49,10 +49,15 @@ bot.on('message', message => {
     });
   }
 
-  if(command === commands[1]) { //not working
+  if(command === commands[1]) { //fixed
     if(args.length == 1) {
       let name = args[0];
+      if(name.length < 2) {
+        message.reply("The name must be over 2 characters and below 100 characters.");
+        return;
+      }
       guild.createChannel(name, "text").then(console.log("Successfully created channel " + name)).catch(console.error);
+      message.reply("Successfully created channel " + name);
     } else {
       message.reply("Invalid usage, try %help.");
     }
