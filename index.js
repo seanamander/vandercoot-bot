@@ -3,8 +3,8 @@ const bot = new Discord.Client();
 var prefix = '%';
 var commands = ["help", "newchannel", "kick", "ban", "mute", "unmute", "clear", "8ball", "eval", "add", "multiply", "subtract", "divide", "modulo", "say"];
 var descriptions = [
-  "View help for certain commands",
-]
+  "View help for certain commands", "Creates a new channel, text or voice", "Kicks a user", "Bans a user", "Mutes a user", "Unmutes a user", "Clears messages", "Asks the 8ball a question (yes or no)", "Bot creators only, restricted from all other users", "Adds 2 integers (only 2)", "Multiplies 2 integers (only 2)", "Subtracts 1 integer from another (only 2)", "Divides 1 integer from another (only 2)", "Gets the remainder of a division problem", "Makes the bot say something (restricted to bot creators)"
+];
 var fortunes = [":8ball: | Yes!", ":8ball: | No!", ":8ball: | The answer is unclear, try again.", ":8ball: | I'm uncertain", ":8ball: | Most definitely.", ":8ball: | Definitely not!", ":8ball: | Maybe.", ":8ball: | Did you expect the answer to be yes? Because it's not yes.", ":8ball: | Why would the answer possibly be no?", ":8ball: | Do I really have to answer that?", ":8ball: | Perhaps.", ":8ball: | Totally.", ":8ball: | Not in a million years.", ":8ball: | You already know the answer is no.", ":8ball: | The answer couldn't be anything other than no.", ":8ball: | Probably. /shrug", ":8ball: | Maybe in another world buddy."]
 var blue = 3447003;
 
@@ -61,7 +61,7 @@ bot.on('message', message => {
         }
         const embed = new Discord.RichEmbed()
         .setAuthor('Vandercoot')
-        .setColor(3447003)
+        .setColor(blue)
         .setThumbnail('https://cdn.discordapp.com/icons/332587016581808129/590eaf45476540d88f0b69284f84a43c.jpg')
         .setTimestamp()
         .addField(token, descriptions[index]);
@@ -71,7 +71,7 @@ bot.on('message', message => {
             .setTitle('Help/Commands')
             .addField('\u200b', '\u200b', true)
             .setAuthor('Vandercoot')
-            .setColor(3447003)
+            .setColor(blue)
             .setThumbnail('https://cdn.discordapp.com/icons/332587016581808129/590eaf45476540d88f0b69284f84a43c.jpg')
             .setTimestamp()
             .addField('Command Help', 'say `%help%<command>`', true)
