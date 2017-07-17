@@ -224,9 +224,9 @@ bot.on('message', message => {
     }
 
     if (command === commands[6]) {
-      let modRole === message.guild.roles.find("name", "Moderator");
-      let adminRole === messsage.guild.roles.find("name", "Admin");
-      if(!message.member.roles.has(modRole.id || adminRole.id) || message.member.id === message.guild.ownerID) {
+      let modRole = message.guild.roles.find("name", "Moderator");
+      let adminRole = message.guild.roles.find("name", "Admin");
+      if(message.member.roles.has(modRole.id || adminRole.id) || message.member.id === message.guild.ownerID) {
         if (isNaN(args.join(" "))) {
             deleteBotMsg("That's not a valid number.")
 
@@ -244,7 +244,11 @@ bot.on('message', message => {
         }
         message.channel.bulkDelete(args.join(" ")) + 2;
         deleteBotMsg("Successfully cleared " + args.join(" "))
+    } else {
+      deleteBotMsg("You don't have the sufficient permissions.")
+      return;
     }
+  }
 
     if (command === commands[7]) {
         if (args.join(" ").length === 0) {
@@ -256,11 +260,7 @@ bot.on('message', message => {
             message.reply(":8ball: | I can't read that, try something else.")
             return
         }
-      } else {
-        deleteBotMsg("You don't have the sufficient permissions.")
-        return;
       }
-    }
 
     if (command === commands[8]) {
         if (message.author.id != (135222378518020096 || 160203438230208513)) {deleteBotMsg("You don't have access to that command."); return;}
