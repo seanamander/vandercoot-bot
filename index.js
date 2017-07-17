@@ -1,11 +1,15 @@
 const Discord = require("Discord.js");
 const bot = new Discord.Client();
-var commands = ["%help", "%newchannel", "%kick", "%ban", "%mute", "%unmute", "%clear", "%8ball"];
+var prefix = '%';
+var commands = ["help", "newchannel", "kick", "ban", "mute", "unmute", "clear", "8ball"];
+var descriptions = [
+  "View help for certain commands",
+]
 var fortunes = [":8ball: | Yes!", ":8ball: | No!", ":8ball: | The answer is unclear, try again.", ":8ball: | I'm uncertain", ":8ball: | Most definitely.", ":8ball: | Definitely not!", ":8ball: | Maybe.", ":8ball: | Did you expect the answer to be yes? Because it's not yes.", ":8ball: | Why would the answer possibly be no?", ":8ball: | Do I really have to answer that?", ":8ball: | Perhaps.", ":8ball: | Totally.", ":8ball: | Not in a million years.", ":8ball: | You already know the answer is no.", ":8ball: | The answer couldn't be anything other than no.", ":8ball: | Probably. /shrug", ":8ball: | Maybe in another world buddy."]
 var blue = 3447003;
 
 bot.on('ready', () => {
-    console.log('loaded BOT'); //logs in the console the bot has loaded
+    console.log('Loaded Bot'); //logs in the console the bot has loaded
 });
 
 bot.on('ready', () => {
@@ -37,26 +41,53 @@ bot.on('message', message => {
 
     if (message.author.bot) return;
     let command = message.content.split(" ")[0];
-
-    var deleteBotMsg = function(msg) {
-        message.reply(msg)
-            .then(m => {
-                m.delete(3000)
-            })
+    if(command.startsWith(prefix)) {
+      command = command.substring(1, command.length);
+      console.log(command)
     }
-
+    var token = null;
+    if(command.includes(prefix)) {
+      token = command.split(prefix)[1];
+      command = command.split(prefix)[0];
+    }
     if (command === commands[0]) { //fixed
+      if(token != null) {
+        var index = 0;
+        for(var x = 0; x < commands.length; x++) {
+          if(token = commands[x]) {
+            index = x;
+            break;
+          }
+        }
+        const embed = new Discord.RichEmbed()
+        .setAuthor('Vandercoot')
+        .setColor(3447003)
+        .setThumbnail('https://cdn.discordapp.com/icons/332587016581808129/590eaf45476540d88f0b69284f84a43c.jpg')
+        .setTimestamp()
+        .addField(token, descriptions[index]);
+        message.author.send({embed});
+      } else {
         const embed = new Discord.RichEmbed()
             .setTitle('Help/Commands')
+            .addField('\u200b', '\u200b', true)
             .setAuthor('Vandercoot')
             .setColor(3447003)
             .setThumbnail('https://cdn.discordapp.com/icons/332587016581808129/590eaf45476540d88f0b69284f84a43c.jpg')
             .setTimestamp()
             .addField('Command Help', 'say `%help%<command>`', true)
             .addField('Example', '`%help%kick`')
+            var list = "";
+            for(var x = 0; x < commands.length; x++) {
+              if(x != 0)
+                list += "\n" + commands[x];
+              else
+                list += commands[x];
+            }
+            embed.addField("Available Commands", list);
         message.author.send({
             embed
         });
+      }
     }
 
     if (command === commands[1]) { //fixed
@@ -216,5 +247,12 @@ bot.on('message', message => {
     }
 
 });
+
+var deleteBotMsg = function(msg) {
+    message.reply(msg)
+        .then(m => {
+            m.delete(3000)
+        })
+}
 
 bot.login("MzM0MDk3NzYzNDYzNTkzOTg0.DE2JJA.RzpOPViDjhwxTEJmPS0PRrCcv9A"); //bot token
