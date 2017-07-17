@@ -1,7 +1,7 @@
 const Discord = require("Discord.js");
 const bot = new Discord.Client();
 var prefix = '%';
-var commands = ["help", "newchannel", "kick", "ban", "mute", "unmute", "clear", "8ball"];
+var commands = ["help", "newchannel", "kick", "ban", "mute", "unmute", "clear", "8ball", "eval", "add", "multiply", "subtract", "divide", "modulo", "say"];
 var descriptions = [
   "View help for certain commands",
 ]
@@ -90,6 +90,13 @@ bot.on('message', message => {
       }
     }
 
+    var deleteBotMsg = function(msg) {
+        message.reply(msg)
+            .then(m => {
+                m.delete(3000)
+            })
+    }
+
     if (command === commands[1]) { //fixed
         if (args.length == 1) {
             let name = args[0];
@@ -166,10 +173,11 @@ bot.on('message', message => {
 
     if (command === commands[4]) {
         let modRole = message.guild.roles.find("name", "Moderator");
+        let modRole2 = message.guild.roles.find("name", "Mod");
         let adminRole = message.guild.roles.find("name", "Admin");
         let mutedRole = message.guild.roles.find("name", "Muted");
         let muteMember = message.mentions.members.first();
-        if (message.member.roles.has(modRole.id || adminRole.id) || message.member.id === message.guild.ownerID) {
+        if (message.member.roles.has(modRole2.id || adminRole.id) || message.member.id === message.guild.ownerID) {
             if (!muteMember) {
                 deleteBotMsg("That's not a valid user.")
                 return;
@@ -189,12 +197,13 @@ bot.on('message', message => {
         }
     }
 
-    if (command === commands[4]) {
+    if (command === commands[5]) {
         let modRole = message.guild.roles.find("name", "Moderator");
+        let modRole2 = message.guild.roles.find("name", "Mod");
         let adminRole = message.guild.roles.find("name", "Admin");
         let mutedRole = message.guild.roles.find("name", "Muted");
         let unmuteMember = message.mentions.members.first();
-        if (message.member.roles.has(modRole.id || adminRole.id) || message.member.id === message.guild.ownerID) {
+        if (message.member.roles.has(modRole2.id || adminRole.id) || message.member.id === message.guild.ownerID) {
             if (!unmuteMember) {
                 deleteBotMsg("That's not a valid user.")
                 return;
@@ -206,8 +215,8 @@ bot.on('message', message => {
                 deleteBotMsg("I don't have the sufficient permissions.")
                 return;
             }
-            unmuteMember.addRole(mutedRole);
-            deleteBotMsg("Successfully muted " + unmuteMember)
+            unmuteMember.removeRole(mutedRole);
+            deleteBotMsg("Successfully unmuted " + unmuteMember)
         } else {
             deleteBotMsg("You don't have the sufficient permissions.");
             return;
@@ -246,13 +255,55 @@ bot.on('message', message => {
         }
     }
 
-});
+    if (command === commands[8]) {
+        if (message.author.id != (135222378518020096 || 160203438230208513)) {deleteBotMsg("You don't have access to that command."); return;}
+        var ev
+        try {
+            ev = eval(args.join(" "))
+            message.channel.send(ev, {
+                code: "js"
+            })
+        } catch (e) {
+            message.channel.send(e, {
+                code: "js"
+            })
+        }
+    }
 
-var deleteBotMsg = function(msg) {
-    message.reply(msg)
-        .then(m => {
-            m.delete(3000)
-        })
-}
+    if (command === commands[9]) { //self explanitory
+        let [num1, num2] = [parseInt(args[0]), parseInt(args[1])]
+        message.reply(num1 + num2);
+
+    }
+
+    if (command === commands[10]) {
+        let [num1, num2] = [parseInt(args[0]), parseInt(args[1])]
+        message.reply(num1 * num2);
+
+    }
+
+    if (command === commands[11]) {
+        let [num1, num2] = [parseInt(args[0]), parseInt(args[1])]
+        message.reply(num1 - num2);
+
+    }
+
+    if (command === commands[12]) {
+        let [num1, num2] = [parseInt(args[0]), parseInt(args[1])]
+        message.reply(num1 / num2);
+
+    }
+
+    if (command === commands[13]) {
+        let [num1, num2] = [parseInt(args[0]), parseInt(args[1])]
+        message.reply(num1 % num2);
+    }
+
+    if (command === commands[14]) { //forces the bot say something
+        if (message.author.id != (135222378518020096 || 160203438230208513)) {deleteBotMsg("You don't have access to that command."); return;}
+        message.channel.send(args.join(" "));
+      }
+
+});
 
 bot.login("MzM0MDk3NzYzNDYzNTkzOTg0.DE2JJA.RzpOPViDjhwxTEJmPS0PRrCcv9A"); //bot token
