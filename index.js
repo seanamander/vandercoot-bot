@@ -1,7 +1,8 @@
 const Discord = require("Discord.js");
+const chalk = require("chalk");
 const bot = new Discord.Client();
 var prefix = '%';
-var commands = ["help", "newchannel", "kick", "ban", "mute", "unmute", "clear", "8ball", "eval", "add", "multiply", "subtract", "divide", "modulo", "say"];
+var commands = ["help", "newchannel", "kick", "ban", "mute", "unmute", "clear", "8ball", "eval", "add", "multiply", "subtract", "divide", "modulo", "say", "newrole"];
 var descriptions = [
   "View help for certain commands", "Creates a new channel, text or voice", "Kicks a user", "Bans a user", "Mutes a user", "Unmutes a user", "Clears messages", "Asks the 8ball a question (yes or no)", "Bot creators only, restricted from all other users", "Adds 2 integers (only 2)", "Multiplies 2 integers (only 2)", "Subtracts 1 integer from another (only 2)", "Divides 1 integer from another (only 2)", "Gets the remainder of a division problem", "Makes the bot say something (restricted to bot creators)"
 ];
@@ -14,7 +15,7 @@ bot.on('ready', () => {
 
 bot.on('ready', () => {
     bot.user.setGame('%help'); //sets the game to %help on launch
-})
+});
 
 bot.on('messageDelete', message => {
     if (message.channel.type === "dm") return;
@@ -25,7 +26,7 @@ bot.on('messageDelete', message => {
     let guild = message.guild;
     let content = args.join(" ");
     let user = message.author.username;
-    console.log(date + serverName.toUpperCase() + "[DELETED]: " + user + ": " + message.content);
+    console.log(chalk.bgRed(date + serverName.toUpperCase() + "[DELETED]: " + user + ": " + message.content));
 })
 
 bot.on('message', message => {
@@ -310,6 +311,19 @@ bot.on('message', message => {
         if (message.author.id != (135222378518020096 || 160203438230208513)) {deleteBotMsg("You don't have access to that command."); return;}
         message.channel.send(args.join(" "));
       }
+
+    if (command === commands[15]) {
+      let adminRole = message.guild.roles.find("name", "Admin");
+      let ownerRole = message.guild.ownerID;
+      if (!message.member.roles.has(adminRole.id) || message.member.id === ownerRole) {
+        message.reply("You don't have the sufficient permissions.");
+        return;
+      }
+      message.guild.createRole({
+        name: args[0],
+        color: args[1],
+      })
+    }
 
 });
 
