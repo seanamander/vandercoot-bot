@@ -55,7 +55,7 @@ bot.on('message', message => {
       if(token != null) {
         var index = 0;
         for(var x = 0; x < commands.length; x++) {
-          if(token = commands[x]) {
+          if(token === commands[x]) {
             index = x;
             break;
           }
